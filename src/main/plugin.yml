@@ -1,5 +1,6 @@
 name: CannonLiner
 version: "1.0"
 description: CannonLiner plugin for CannonLiner mod
+depend: [WorldEdit]
 author: phonis
 main: phonis.cannonliner.CannonLiner

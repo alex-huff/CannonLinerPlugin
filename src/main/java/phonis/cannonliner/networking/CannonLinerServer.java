@@ -3,6 +3,7 @@ package phonis.cannonliner.networking;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class CannonLinerServer extends Thread {
 
@@ -31,6 +32,7 @@ public class CannonLinerServer extends Thread {
 
                 this.currentHandlerThread.start();
             }
+        } catch (SocketException ignored) {
         } catch (Throwable e) {
             e.printStackTrace();
         }
