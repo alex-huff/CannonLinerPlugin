@@ -1,9 +1,5 @@
-name: CannonTracer
+name: CannonLiner
 version: "1.0"
-description: EntityTracer rewrite
+description: CannonLiner plugin for CannonLiner mod
 author: phonis
-main: phonis.cannontracer.CannonTracer
-commands:
-  tracer:
-    aliases: [t]
-    description: Base command for plugin
+main: phonis.cannonliner.CannonLiner

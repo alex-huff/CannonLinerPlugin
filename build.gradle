@@ -5,12 +5,15 @@ repositories {
     // you must run BuildTools.jar for maven to be able to locate the necessary dependencies.
     // --rev 1.8.8
     mavenLocal()
+    jcenter()
+    maven { url 'https://maven.enginehub.org/repo/' }
 }
 
 apply plugin: 'java'
 
 dependencies {
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+    compileOnly 'com.sk89q:worldedit:6.0.0-SNAPSHOT'
 }
 
 tasks.withType(JavaCompile) {
@@ -18,7 +21,7 @@ tasks.withType(JavaCompile) {
 }
 
 jar {
-    archiveBaseName.set('CannonTracer')
+    archiveBaseName.set('CannonLiner')
     archiveVersion.set('')
 
     from('src/main') {
