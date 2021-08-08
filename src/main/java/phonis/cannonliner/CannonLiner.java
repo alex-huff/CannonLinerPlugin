@@ -32,6 +32,7 @@ public class CannonLiner extends JavaPlugin {
     @Override
     public void onDisable() {
         this.cannonLinerServer.close();
+        Tick.removeCannon();
     }
 
 }

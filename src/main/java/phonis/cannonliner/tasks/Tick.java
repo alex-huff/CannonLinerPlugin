@@ -1,10 +1,14 @@
 package phonis.cannonliner.tasks;
 
+import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldedit.Vector2D;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.Dispenser;
 import org.bukkit.entity.*;
 import phonis.cannonliner.CannonLiner;
 import phonis.cannonliner.networking.*;
@@ -176,6 +180,25 @@ public class Tick implements Runnable {
 
         this.handleTraces(traces);
         this.changes.clear();
+    }
+
+    public static void removeCannon() {
+        World world = Bukkit.getWorld("world");
+        Iterator<BlockVector> iterator = Tick.currentCannon.iterator();
+
+        while (iterator.hasNext()) {
+            BlockVector blockVector = iterator.next();
+
+            Block block = world.getBlockAt(blockVector.getBlockX(), blockVector.getBlockY(), blockVector.getBlockZ());
+
+            if (block.getType().equals(Material.DISPENSER)) {
+                Dispenser dispenser = (Dispenser) block.getState();
+
+                dispenser.getInventory().clear();
+            }
+
+            block.setType(Material.AIR);
+        }
     }
 
 }

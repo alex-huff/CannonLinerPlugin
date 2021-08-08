@@ -99,7 +99,7 @@ public class CannonLinerHandler {
         }
 
         if (Tick.currentCannon != null) {
-            this.removeRegion(world, Tick.currentCannon);
+            Tick.removeCannon();
         }
 
         CuboidRegion schemRegion = (CuboidRegion) clipboard.getRegion();
@@ -245,24 +245,6 @@ public class CannonLinerHandler {
                 },
                 tickLength
             );
-        }
-    }
-
-    public void removeRegion(org.bukkit.World world, CuboidRegion region) {
-        Iterator<BlockVector> iterator = region.iterator();
-
-        while (iterator.hasNext()) {
-            BlockVector blockVector = iterator.next();
-
-            Block block = world.getBlockAt(blockVector.getBlockX(), blockVector.getBlockY(), blockVector.getBlockZ());
-
-            if (block.getType().equals(Material.DISPENSER)) {
-                Dispenser dispenser = (Dispenser) block.getState();
-
-                dispenser.getInventory().clear();
-            }
-
-            block.setType(Material.AIR);
         }
     }
 
