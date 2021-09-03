@@ -13,20 +13,17 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.registry.LegacyWorldData;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Dispenser;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Button;
 import phonis.cannonliner.CannonLiner;
 import phonis.cannonliner.tasks.Tick;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Iterator;
 
 public class CannonLinerHandler {
 
@@ -174,77 +171,23 @@ public class CannonLinerHandler {
         };
 
         if (buttonLocation != null) {
-//            Vector finalButtonLocation = buttonLocation;
-//            Bukkit.getScheduler().scheduleSyncDelayedTask(
-//                CannonLiner.instance,
-//                () -> this.fire(world.getBlockAt(x + finalButtonLocation.getBlockX(), y + finalButtonLocation.getBlockY(), z + finalButtonLocation.getBlockZ())),
-//                100L
-//            );
-            this.fire(world.getBlockAt(x + buttonLocation.getBlockX(), y + buttonLocation.getBlockY(), z + buttonLocation.getBlockZ()));
+            Vector finalButtonLocation = buttonLocation;
+
+            Bukkit.getScheduler().scheduleSyncDelayedTask(
+                CannonLiner.instance,
+                () -> this.fire(world.getBlockAt(x + finalButtonLocation.getBlockX(), y + finalButtonLocation.getBlockY(), z + finalButtonLocation.getBlockZ())),
+                10L
+            );
         }
     }
 
     private void fire(Block block) {
-        if (
-            (
-                block.getType().equals(Material.STONE_BUTTON) ||
-                block.getType().equals(Material.WOOD_BUTTON)
-            ) &&
-            block.getState().getData().getData() <= 5
-        ) {
-            long tickLength;
-            Button button = (Button) block.getState().getData();
-            BlockState bs = block.getState();
-            BlockFace face = button.getAttachedFace();
-            Block blockTwo = block.getRelative(face);
+        if (block.getType().equals(Material.STONE_BUTTON) || block.getType().equals(Material.WOOD_BUTTON)) {
+            net.minecraft.server.v1_8_R3.World nmsWorld = ((CraftWorld) block.getWorld()).getHandle();
+            BlockPosition blockPos = new BlockPosition(block.getX(), block.getY(), block.getZ());
+            BlockButtonAbstract nmsBlock = (BlockButtonAbstract) nmsWorld.getType(blockPos).getBlock();
 
-            block.setType(Material.AIR);
-
-            Material blockMaterial = blockTwo.getType();
-            byte data = blockTwo.getData();
-
-            block.setType(button.getItemType());
-            button.setPowered(true);
-            bs.setRawData(button.getData());
-            bs.update();
-            block.getState().update();
-            blockTwo.setType(Material.REDSTONE_BLOCK, false);
-            blockTwo.setType(blockMaterial);
-            blockTwo.setData(data);
-
-            if (block.getType().equals(Material.STONE_BUTTON)) {
-                tickLength = 21L;
-            } else {
-                tickLength = 31L;
-            }
-
-            Bukkit.getScheduler().scheduleSyncDelayedTask(
-                CannonLiner.instance,
-                new Runnable() {
-                    @Deprecated
-                    public void run() {
-                        Button button = (Button) block.getState().getData();
-                        BlockState bs = block.getState();
-                        BlockFace face = button.getAttachedFace();
-                        Block blockTwo = block.getRelative(face);
-
-                        block.setType(Material.AIR);
-
-                        Material blockMaterial = blockTwo.getType();
-                        byte data = blockTwo.getData();
-
-                        block.setType(button.getItemType());
-                        button.setPowered(false);
-                        bs.setRawData(button.getData());
-                        bs.update();
-                        block.getState().update();
-                        blockTwo.setType(Material.STONE, false);
-                        blockTwo.setType(blockMaterial);
-                        blockTwo.setData(data);
-                    }
-                },
-                tickLength
-            );
+            nmsBlock.interact(nmsWorld, blockPos, nmsWorld.getType(blockPos), null, null, 0f, 0f, 0f);
         }
     }
 

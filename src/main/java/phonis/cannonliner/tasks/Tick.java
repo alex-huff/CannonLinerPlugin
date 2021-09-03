@@ -106,11 +106,12 @@ public class Tick implements Runnable {
     }
 
     private void handleTraces(List<Trace> traces) {
-        if (Tick.packetConsumer == null) {
+        Consumer<CTPacket> consumer = Tick.packetConsumer;
+        Map<LineEq, LineSet> culledLines = new HashMap<>();
+
+        if (consumer == null) {
             return;
         }
-
-        Map<LineEq, LineSet> culledLines = new HashMap<>();
 
         for (Trace trace : traces) {
             List<Line> lines = trace.getLines();
@@ -135,11 +136,11 @@ public class Tick implements Runnable {
         }
 
         if (totalLines.size() > 0) {
-            Tick.packetConsumer.accept(new CTNewLines(totalLines));
+            consumer.accept(new CTNewLines(totalLines));
         }
 
         if (totalArtifacts.size() > 0) {
-            Tick.packetConsumer.accept(new CTNewArtifacts(new ArrayList<>(totalArtifacts)));
+            consumer.accept(new CTNewArtifacts(new ArrayList<>(totalArtifacts)));
         }
     }
 
