@@ -49,6 +49,7 @@ public class CannonLinerHandler {
             int x = dataInputStream.readInt();
             int y = dataInputStream.readInt();
             int z = dataInputStream.readInt();
+            org.bukkit.util.Vector playerPos = new org.bukkit.util.Vector(dataInputStream.readDouble(), dataInputStream.readDouble(), dataInputStream.readDouble());
             int length = dataInputStream.readInt();
             byte[] schemData = new byte[length];
             OutputStream outputStream = this.socket.getOutputStream();
@@ -58,7 +59,7 @@ public class CannonLinerHandler {
                 CannonLiner.instance,
                 () -> {
                     try {
-                        this.pasteSchematica(x, y, z, schemData, outputStream);
+                        this.pasteSchematica(x, y, z, schemData, outputStream, playerPos);
                     } catch (Throwable e) {
                         e.printStackTrace();
                     }
@@ -69,7 +70,7 @@ public class CannonLinerHandler {
         }
     }
 
-    private void pasteSchematica(int x, int y, int z, byte[] schemData, OutputStream outputStream) throws Exception {
+    private void pasteSchematica(int x, int y, int z, byte[] schemData, OutputStream outputStream, org.bukkit.util.Vector playerPos) throws Exception {
         if (!(Bukkit.getPluginManager().getPlugin("WorldEdit") instanceof WorldEditPlugin)) {
             throw new Exception("Invalid WorldEdit.");
         }
@@ -127,6 +128,7 @@ public class CannonLinerHandler {
         Vector dimensions = clipboard.getDimensions();
         Vector currentBlock = new Vector();
         Vector buttonLocation = null;
+        double closest = Double.MAX_VALUE;
 
         for (int blockX = 0; blockX < dimensions.getBlockX(); blockX++) {
             currentBlock = currentBlock.setX(blockX);
@@ -143,7 +145,12 @@ public class CannonLinerHandler {
 
                         dispenser.getInventory().addItem(new ItemStack(Material.TNT, 64));
                     } else if (type == 77 || type == 143) { // stone and wood button
-                        buttonLocation = currentBlock;
+                        double distance = playerPos.distance(new org.bukkit.util.Vector(x + currentBlock.getX(), y + currentBlock.getY(), z + currentBlock.getZ()));
+
+                        if (distance < closest) {
+                            closest = distance;
+                            buttonLocation = currentBlock;
+                        }
                     }
                 }
             }
