@@ -189,7 +189,6 @@ public class Tick implements Runnable {
 
         while (iterator.hasNext()) {
             BlockVector blockVector = iterator.next();
-
             Block block = world.getBlockAt(blockVector.getBlockX(), blockVector.getBlockY(), blockVector.getBlockZ());
 
             if (block.getType().equals(Material.DISPENSER)) {
