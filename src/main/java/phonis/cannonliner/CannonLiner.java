@@ -1,10 +1,7 @@
 package phonis.cannonliner;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import phonis.cannonliner.listeners.BlockBreakEvent;
-import phonis.cannonliner.listeners.ChunkUnloadEvent;
-import phonis.cannonliner.listeners.ExplosionEvent;
-import phonis.cannonliner.listeners.SandBlockEvent;
+import phonis.cannonliner.listeners.*;
 import phonis.cannonliner.networking.CannonLinerServer;
 import phonis.cannonliner.tasks.Tick;
 

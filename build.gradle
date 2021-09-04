@@ -1,4 +1,4 @@
-group 'phonis'
+group 'dev.phonis'
 version '1.0'
 
 repositories {

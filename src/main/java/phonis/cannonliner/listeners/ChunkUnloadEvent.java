@@ -3,13 +3,13 @@ package phonis.cannonliner.listeners;
 import com.sk89q.worldedit.Vector2D;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import phonis.cannonliner.CannonLiner;
+import org.bukkit.plugin.java.JavaPlugin;
 import phonis.cannonliner.tasks.Tick;
 
 public class ChunkUnloadEvent implements Listener {
 
-    public ChunkUnloadEvent(CannonLiner cannonLiner) {
-        cannonLiner.getServer().getPluginManager().registerEvents(this, cannonLiner);
+    public ChunkUnloadEvent(JavaPlugin plugin) {
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler

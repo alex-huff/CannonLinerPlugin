@@ -7,7 +7,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
-import phonis.cannonliner.CannonLiner;
+import org.bukkit.plugin.java.JavaPlugin;
 import phonis.cannonliner.tasks.Tick;
 import phonis.cannonliner.trace.ChangeType;
 import phonis.cannonliner.trace.LocationChange;
@@ -15,8 +15,8 @@ import phonis.cannonliner.trace.LocationChange;
 public class SandBlockEvent implements Listener {
     private final Tick tick;
 
-    public SandBlockEvent(CannonLiner cannonLiner, Tick tick) {
-        cannonLiner.getServer().getPluginManager().registerEvents(this, cannonLiner);
+    public SandBlockEvent(JavaPlugin plugin, Tick tick) {
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
         this.tick = tick;
     }

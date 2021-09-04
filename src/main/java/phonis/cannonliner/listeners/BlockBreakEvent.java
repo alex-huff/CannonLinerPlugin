@@ -4,13 +4,13 @@ import com.sk89q.worldedit.Vector;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import phonis.cannonliner.CannonLiner;
+import org.bukkit.plugin.java.JavaPlugin;
 import phonis.cannonliner.tasks.Tick;
 
 public class BlockBreakEvent implements Listener {
 
-    public BlockBreakEvent(CannonLiner cannonLiner) {
-        cannonLiner.getServer().getPluginManager().registerEvents(this, cannonLiner);
+    public BlockBreakEvent(JavaPlugin plugin) {
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler

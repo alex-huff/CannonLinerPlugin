@@ -6,7 +6,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
-import phonis.cannonliner.CannonLiner;
+import org.bukkit.plugin.java.JavaPlugin;
 import phonis.cannonliner.tasks.Tick;
 import phonis.cannonliner.trace.ChangeType;
 import phonis.cannonliner.trace.EntityLocation;
@@ -16,8 +16,8 @@ public class ExplosionEvent implements Listener {
 
     private final Tick tick;
 
-    public ExplosionEvent(CannonLiner cannonLiner, Tick tick) {
-        cannonLiner.getServer().getPluginManager().registerEvents(this, cannonLiner);
+    public ExplosionEvent(JavaPlugin plugin, Tick tick) {
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
         this.tick = tick;
     }
