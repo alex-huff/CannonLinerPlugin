@@ -1,5 +1,6 @@
 package phonis.cannonliner;
 
+import com.sk89q.worldedit.WorldEditException;
 import org.bukkit.plugin.java.JavaPlugin;
 import phonis.cannonliner.listeners.*;
 import phonis.cannonliner.networking.CannonLinerServer;
@@ -31,7 +32,9 @@ public class CannonLiner extends JavaPlugin {
         this.cannonLinerServer.close();
 
         if (Tick.currentCannon != null) {
-            Tick.removeCannon();
+            try {
+                Tick.removeCannon();
+            } catch (WorldEditException ignored) { }
         }
     }
 

@@ -105,7 +105,6 @@ public class CannonLinerHandler {
             new Vector(x, y, z),
             new Vector(x + schemRegion.getWidth() - 1, y + schemRegion.getHeight() - 1, z + schemRegion.getLength() - 1)
         );
-
         Vector expansionVector = new Vector(32, 0, 32);
         CuboidRegion schemRegionExpanded = new CuboidRegion(Tick.currentCannon.getMinimumPoint().subtract(expansionVector), Tick.currentCannon.getMaximumPoint().add(expansionVector));
         Tick.currentChunks = schemRegionExpanded.getChunks();
@@ -118,7 +117,7 @@ public class CannonLinerHandler {
         Operation operation = new ClipboardHolder(
             clipboard,
             LegacyWorldData.getInstance()
-        ).createPaste(editSession, LegacyWorldData.getInstance()).to(new BlockVector(x, y, z)).build();
+        ).createPaste(editSession, LegacyWorldData.getInstance()).to(Tick.currentCannon.getMinimumPoint()).build();
 
         editSession.enableQueue();
         Operations.complete(operation);

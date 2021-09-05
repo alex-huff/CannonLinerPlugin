@@ -1,14 +1,16 @@
 package phonis.cannonliner.tasks;
 
-import com.sk89q.worldedit.BlockVector;
-import com.sk89q.worldedit.Vector2D;
+import com.sk89q.worldedit.*;
+import com.sk89q.worldedit.bukkit.BukkitWorld;
+import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
+import com.sk89q.worldedit.function.operation.Operation;
+import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldedit.world.registry.LegacyWorldData;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.Dispenser;
 import org.bukkit.entity.*;
 import phonis.cannonliner.CannonLiner;
 import phonis.cannonliner.networking.*;
@@ -183,22 +185,19 @@ public class Tick implements Runnable {
         this.changes.clear();
     }
 
-    public static void removeCannon() {
+    public static void removeCannon() throws WorldEditException {
         World world = Bukkit.getWorld("world");
-        Iterator<BlockVector> iterator = Tick.currentCannon.iterator();
+        EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession((com.sk89q.worldedit.world.World) new BukkitWorld(world), Integer.MAX_VALUE);
+        BlockArrayClipboard bac = new BlockArrayClipboard(Tick.currentCannon);
+        Operation operation = new ClipboardHolder(
+            bac,
+            LegacyWorldData.getInstance()
+        ).createPaste(editSession, LegacyWorldData.getInstance()).to(Tick.currentCannon.getMinimumPoint()).build();
 
-        while (iterator.hasNext()) {
-            BlockVector blockVector = iterator.next();
-            Block block = world.getBlockAt(blockVector.getBlockX(), blockVector.getBlockY(), blockVector.getBlockZ());
-
-            if (block.getType().equals(Material.DISPENSER)) {
-                Dispenser dispenser = (Dispenser) block.getState();
-
-                dispenser.getInventory().clear();
-            }
-
-            block.setType(Material.AIR);
-        }
+        editSession.enableQueue();
+        Operations.complete(operation);
+        Operations.complete(editSession.commit());
+        editSession.flushQueue();
     }
 
 }
