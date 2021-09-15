@@ -27,7 +27,7 @@ public class Tick implements Runnable {
 
     private final Set<LocationChange> changes = new HashSet<>();
     private final Set<EntityLocation> lastTicks = new HashSet<>();
-    private final Map<Integer, EntityLocation> locations = new HashMap<>();
+    public final Map<Integer, EntityLocation> locations = new HashMap<>();
     private final CannonLiner cannonLiner;
 
     public Tick(CannonLiner cannonLiner) {
@@ -87,7 +87,7 @@ public class Tick implements Runnable {
 
         for (World world : Bukkit.getServer().getWorlds()) {
             for (Entity entity : world.getEntitiesByClasses(FallingBlock.class, TNTPrimed.class, Player.class)) {
-                processEntity(world, entity);
+                this.processEntity(world, entity);
             }
         }
 
