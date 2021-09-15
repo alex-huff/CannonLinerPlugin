@@ -2,6 +2,7 @@ package dev.phonis.cannonliner.listeners;
 
 import dev.phonis.cannonliner.tasks.Tick;
 import dev.phonis.cannonliner.trace.ChangeType;
+import dev.phonis.cannonliner.trace.EntityLocation;
 import dev.phonis.cannonliner.trace.LocationChange;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,7 +29,14 @@ public class SandBlockEvent implements Listener {
 
             if (entity.getType().compareTo(EntityType.FALLING_BLOCK) == 0) {
                 Location loc = entity.getLocation();
-                LocationChange change = new LocationChange(entity.getWorld(), loc, loc, EntityType.FALLING_BLOCK, ChangeType.END, entity.getVelocity().length());
+                EntityLocation el = this.tick.locations.get(entity.getEntityId());
+                LocationChange change;
+
+                if (el == null) {
+                    change = new LocationChange(entity.getWorld(), loc, loc, entity.getType(), ChangeType.END, entity.getVelocity().length());
+                } else {
+                    change = new LocationChange(entity.getWorld(), el.getLocation(), loc, entity.getType(), ChangeType.END, entity.getVelocity().length());
+                }
 
                 this.tick.addChange(change);
             }
