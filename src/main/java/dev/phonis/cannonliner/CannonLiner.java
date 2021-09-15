@@ -3,8 +3,7 @@ package dev.phonis.cannonliner;
 import com.sk89q.worldedit.WorldEditException;
 import dev.phonis.cannonliner.listeners.BlockBreakEvent;
 import dev.phonis.cannonliner.listeners.ChunkUnloadEvent;
-import dev.phonis.cannonliner.listeners.ExplosionEvent;
-import dev.phonis.cannonliner.listeners.SandBlockEvent;
+import dev.phonis.cannonliner.listeners.EntityChangeFormEvent;
 import dev.phonis.cannonliner.tasks.Tick;
 import org.bukkit.plugin.java.JavaPlugin;
 import dev.phonis.cannonliner.networking.CannonLinerServer;
@@ -21,8 +20,7 @@ public class CannonLiner extends JavaPlugin {
         Tick tick = new Tick(this);
         this.cannonLinerServer = new CannonLinerServer();
 
-        new ExplosionEvent(this, tick);
-        new SandBlockEvent(this, tick);
+        new EntityChangeFormEvent(this, tick);
         new BlockBreakEvent(this);
         new ChunkUnloadEvent(this);
 
